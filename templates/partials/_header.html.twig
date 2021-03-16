@@ -8,20 +8,36 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <form action="{{ url('search') }}">
                     <div class="search">
                         <input type="text" placeholder="Search" name="q">
                         <button><i class="fa fa-search"></i></button>
+                    </div>
                 </form>
             </div>
+            <div class="col-md-5">
+                <div class="col-md-6 ln-container"> {{ render(controller('App\\Controller\\DefaultController::user')) }}</div>
+                {% if app.request.getLocale() == 'en' %}
+                <a href="{{ path('change_locale', {'locale':'fr'}) }}"><img class="ln-switcher" src="{{ asset('/assets/img/fr.png')}}" alt="FR"></a>
+                {% else %}
+                <a href="{{ path('change_locale', {'locale':'en'}) }}"><img class="ln-switcher" src="{{ asset('/assets/img/en.png') }}" alt="EN"></a>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-md-3">
-            {{ render(controller('App\\Controller\\DefaultController::user')) }}
-        </div>
+
     </div>
-</div>
-</div>
+
+    {#    <div class="col-md-6 ln-container"> {{ render(controller('App\\Controller\\DefaultController::user')) }}</div>#}
+    {#                {% for locale in locales %}#}
+    {#                    {% if locale is not same as(app.request.locale) %}#}
+    {#    <a href="{{ path('change_locale', {'locale':'fr'}) }}"><img class="ln-switcher" src="{{ asset('/assets/img/'~locale~'.png')}}" alt="{{ locale|upper }}"></a>#}
+    {#                    {% endif %}#}
+    {#                {% endfor %}#}
+    {#                <a href="{{ path('change_locale', {'locale':'fr'}) }}"><img class="ln-switcher" src="{{ asset('/assets/img/en.png') }}" alt="fr"></a>#}
+    {#</div>#}
+
+
 <div class="header">
     <div class="container">
         <nav class="navbar navbar-expand-md bg-dark navbar-dark">

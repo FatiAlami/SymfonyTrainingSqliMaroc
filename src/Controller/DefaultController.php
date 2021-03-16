@@ -64,10 +64,10 @@ class DefaultController extends AbstractController
         $categories = $repository->findAll();
 
         return $this->render(
-           'default/menu.html.twig',
-           [
-               'categories' => $categories,
-           ]
+            'default/menu.html.twig',
+            [
+                'categories' => $categories,
+            ]
         );
     }
 
@@ -119,5 +119,21 @@ class DefaultController extends AbstractController
     public function searchForm(): Response
     {
         return $this->render('default/search_form.html.twig');
+    }
+
+    /**
+     * change the current language
+     *
+     * @Route("/change_locale/{locale}", name="change_locale")
+     * @param string $locale
+     * @param Request $request
+     * @return Response the response instance
+     */
+    public function changeLocale(string $locale, Request $request):Response
+    {
+        $request->getSession()->set('_locale', $locale);
+        $request->setLocale($locale);
+
+        return $this->redirect($request->headers->get('referer'));
     }
 }

@@ -1,5 +1,5 @@
 <div class="navbar-nav m-auto">
-    <a href="{{ url('default') }}" class="nav-item nav-link active">Home</a>
+    <a href="{{ url('default') }}" class="nav-item nav-link active">{% trans %}Home {% endtrans %}</a>
     <div class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
         <div class="dropdown-menu">
@@ -8,5 +8,5 @@
             {% endfor %}
         </div>
     </div>
-    <a href="{{ url('contactus') }}" class="nav-item nav-link">Contact Us</a>
+    <a href="{{ url('contactus') }}" class="nav-item nav-link">{% trans %}Contact Us {% endtrans %}</a>
 </div>

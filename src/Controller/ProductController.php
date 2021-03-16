@@ -9,10 +9,12 @@ use App\Entity\Product;
 use App\Form\AddToCartType;
 use App\Repository\ProductRepository;
 use App\Service\Cart;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProductController extends AbstractController
 {
@@ -25,31 +27,33 @@ class ProductController extends AbstractController
      * @param Request $request the request instance
      * @param ProductRepository $repository the repository instance
      * @param Cart $cart
-     *
+     * @param TranslatorInterface $translator
      * @return Response The response instance
      *
      * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function index(
         Product $product,
         Request $request,
         ProductRepository
         $repository,
-        Cart $cart
+        Cart $cart,
+        TranslatorInterface $translator
     ): Response {
         $line = new OrderLine();
         $line->setProduct($product);
         $form = $this->createForm(AddToCartType::class, $line);
         $form->handleRequest($request);
-        if ($form->isSubmitted() === true) {
-            if ($form->isValid() === true) {
-                $cart->addToCart($line);
-                $this->addFlash('success', 'Product added to cart.');
+        $message = $translator->trans('Product added to cart. ');
+        if ($form->isSubmitted() === true && $form->isValid() === true) {
 
-                return $this->redirectToRoute('cart');
-            }
+            $cart->addToCart($line);
+            $this->addFlash('success', $message);
+
+            return $this->redirectToRoute('cart');
         }
+
         /** @var array<Product> $related */
         $related = $repository->getRelatedProducts($product);
 
